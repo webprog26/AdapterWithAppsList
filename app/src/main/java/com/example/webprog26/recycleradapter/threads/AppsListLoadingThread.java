@@ -50,6 +50,8 @@ public class AppsListLoadingThread extends Thread {
                     model.setWithCategory(true);
                     model.setAppCategorySaver(mDbProvider.getAppCategorySaver(appLabel));
                     Log.i(TAG, "loading from db " + model.toString());
+                } else {
+                    model.getAppCategorySaver().setNeutral(true);
                 }
                 model.setAppIcon(DrawableToBitmapConverter.drawableToBitmap(resolveInfo.loadIcon(mPackageManager)));
                 appModels.add(model);

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.webprog26.recycleradapter.R;
 import com.example.webprog26.recycleradapter.db.DbProvider;
 import com.example.webprog26.recycleradapter.listeners.OnRadioButtonClickListener;
+import com.example.webprog26.recycleradapter.managers.AppCategoryManager;
 import com.example.webprog26.recycleradapter.models.AppCategorySaver;
 import com.example.webprog26.recycleradapter.models.AppModel;
 
@@ -47,18 +48,19 @@ public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerVi
         AppModel model = mAppModelList.get(position);
 
         holder.mIvAppIcon.setImageBitmap(model.getAppIcon());
-        holder.mAppLabel.setText(model.getAppLabel());
+        holder.mTvAppLabel.setText(model.getAppLabel());
 
 
-        OnRadioButtonClickListener clickListener = new OnRadioButtonClickListener(model, mDbProvider);
+        OnRadioButtonClickListener clickListener = new OnRadioButtonClickListener(model, mDbProvider, holder.mTvAppCategory, mContextWeakReference.get());
+        AppCategorySaver appCategorySaver = model.getAppCategorySaver();
 
         if(model.isWithCategory()){
-            AppCategorySaver appCategorySaver = model.getAppCategorySaver();
-
             holder.mRbEducational.setChecked(appCategorySaver.isEducational());
             holder.mRbForFun.setChecked(appCategorySaver.isForFun());
             holder.mRbBlocked.setChecked(appCategorySaver.isBlocked());
         }
+
+        new AppCategoryManager(mContextWeakReference.get()).setAppCategory(appCategorySaver, holder.mTvAppCategory);
 
         holder.mRbEducational.setOnClickListener(clickListener);
         holder.mRbForFun.setOnClickListener(clickListener);
@@ -73,14 +75,15 @@ public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerVi
     public class AppsRecyclerViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView mIvAppIcon;
-        private TextView mAppLabel;
+        private TextView mTvAppLabel, mTvAppCategory;
         private AppCompatRadioButton mRbEducational, mRbForFun, mRbBlocked;
 
         public AppsRecyclerViewHolder(View itemView) {
             super(itemView);
 
             mIvAppIcon = (ImageView) itemView.findViewById(R.id.ivAppIcon);
-            mAppLabel = (TextView) itemView.findViewById(R.id.tvAppLabel);
+            mTvAppLabel = (TextView) itemView.findViewById(R.id.tvAppLabel);
+            mTvAppCategory = (TextView) itemView.findViewById(R.id.tvAppCategory);
 
             mRbEducational = (AppCompatRadioButton) itemView.findViewById(R.id.rbEducational);
             mRbForFun = (AppCompatRadioButton) itemView.findViewById(R.id.rbForFun);

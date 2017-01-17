@@ -7,6 +7,7 @@
     <dimen name="app_icon_width">40dp</dimen>
 
     <dimen name="app_icon_margin_right">10dp</dimen>
+    <dimen name="radio_group_margin_left">10dp</dimen>
 
     <dimen name="app_list_tem_height">60dp</dimen>
 </resources>
